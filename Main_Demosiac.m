@@ -1,8 +1,19 @@
+%% 程序分享 
+% 个人博客 www.aomanhao.top
+% Github https://github.com/AomanHao
+% CSDN https://blog.csdn.net/Aoman_Hao
+%--------------------------------------
+
+%% ISP处理之Demosiac
 clear
+close all
+clc
+%% 原始图像采样生成bayer图像
 I=imread('kodim19.png');
-figure(1)
-imshow(I);%原始图像
+figure;imshow(I);title("原始图像");
 [m,n,p]=size(I);
+
+% 采样 生成bayer图像
 I1=zeros(m,n);
 for i=1:1:m/2
     for j=1:1:n/2
@@ -12,12 +23,13 @@ for i=1:1:m/2
         I1(i*2-1,j*2)=I(i*2-1,j*2,1);
     end
 end
-figure(2)
-imshow(I1/255);%bayer图像
-imwrite(I1/255,'stripes2.png');
+figure;imshow(I1/255);imwrite(I1/255,'stripes2.png');
+
+%% matlab自带demosaic函数处理
 I2=demosaic(uint8(I1),'grbg');
-figure(3)
-imshow(I2);%matlab自带demosaic函数图像
+figure;imshow(I2);
+
+%% 手动插值图像
 I3=zeros(m+2,n+2);
 for i=1:1:m
     for j=1:1:n
@@ -40,5 +52,4 @@ for i=1:1:m/2
         I4(i*2-1,j*2,3)=(I3(i*2-1,j*2)+I3(i*2-1,j*2+2)+I3(i*2+1,j*2)+I3(i*2+1,j*2+2))/4;
     end
 end
-figure(4)
-imshow(I4/255);%手动插值图像
+figure;imshow(I4/255);
