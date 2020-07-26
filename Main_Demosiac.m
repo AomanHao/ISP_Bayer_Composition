@@ -33,6 +33,6 @@ figure;imshow(I2);
 Simple_out = Simple_Inter(I1, m, n);
 figure;imshow(Simple_out/255);
 
-%% 插值优化图像
-Simple_out = Simple_Inter(I1, m, n);
-figure;imshow(Simple_out/255);
+%% 插值优化图像 减少拉链和伪色情况+
+Output = Demosaic_Inter (I1);
+figure;imshow(Output);
