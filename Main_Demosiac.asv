@@ -27,17 +27,17 @@ figure;imshow(I1/255);imwrite(I1/255,'stripes2.png');
 
 %% matlab自带demosaic函数处理
 I2=demosaic(uint8(I1),'grbg');
-figure;imshow(I2);title('自带插值');imwrite(I2,'mat.png');
+figure;imshow(I2);
 
 %% 手动插值图像
 Simple_out = Simple_Inter(I1, m, n);
-figure;imshow(Simple_out/255);title('手动插值');imwrite(Simple_out/255,'手动.png');
+figure;imshow(Simple_out/255);
 
-%% 双线性插值
-Two_out = Demosaic_Twointer(I, m, n);
-figure;imshow(Two_out);imwrite(Two_out,'TwoOutput.png');
+%% 双线性cha'zh
+OutputTwo = Demosaic_Twointer(I,m, n);
+figure;imshow(OutputTwo);imwrite(OutputTwo,'TwoOutput.png');
 
 %% 插值优化图像 减少拉链和伪色情况+
 Output = Demosaic_Inter (I1);
-figure;imshow(Output);title('优化');imwrite(Output,'Output.png');
+figure;imshow(Output);
 
