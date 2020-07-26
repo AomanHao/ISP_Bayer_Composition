@@ -32,7 +32,6 @@ figure;imshow(I2);
 %% 手动插值图像
 Simple_out = Simple_Inter(I1, m, n);
 figure;imshow(Simple_out/255);
-
-%% 插值优化图像
+%% 手动插值图像
 Simple_out = Simple_Inter(I1, m, n);
 figure;imshow(Simple_out/255);
