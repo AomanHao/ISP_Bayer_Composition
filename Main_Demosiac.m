@@ -35,9 +35,9 @@ figure;imshow(Simple_out/255);title('手动插值');imwrite(Simple_out/255,'手动.png
 
 %% 双线性插值
 Two_out = Demosaic_Twointer(I, m, n);
-figure;imshow(Two_out);imwrite(Two_out,'TwoOutput.png');
+figure;imshow(Two_out);title('双线性插值');imwrite(Two_out,'双线性插值.png');
 
 %% 插值优化图像 减少拉链和伪色情况+
 Output = Demosaic_Inter (I1);
-figure;imshow(Output);title('优化');imwrite(Output,'Output.png');
+figure;imshow(Output);title('优化');imwrite(Output,'优化插值.png');
 

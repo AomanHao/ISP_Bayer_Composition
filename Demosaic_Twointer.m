@@ -1,10 +1,13 @@
 function Output = Demosaic_Twointer(img,hei, wid)
 
+%% 
+%Ë«ÏßÐÔ²åÖµ demosaic
 bayer = uint8(zeros(hei,wid));
 %% BGGR
 % B G B G B G
 % G R G R G R
 % B G B G B G
+%% bayer
 for ver = 1:hei
     for hor = 1:wid
         if((1 == mod(ver,2)) && (1 == mod(hor,2)))
