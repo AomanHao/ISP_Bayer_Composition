@@ -25,7 +25,7 @@ for i=1:1:m/2
 end
 figure;imshow(bayer);imwrite(uint8(bayer),'stripes2.png');
 
-%% bayer扩展，0元素补充（默认）或者周边行列赋值
+%% bayer扩展
 bayerPad = bayerPadding(bayer, m, n);imwrite(uint8(bayerPad),'bayerPad.png');
 
 %% matlab自带demosaic函数处理
@@ -34,12 +34,16 @@ figure;imshow(I2);title('自带插值');imwrite(I2,'mat.png');
 
 %% 手动插值图像
 Simple_out = Simple_Inter(bayer, m, n);
-figure;imshow(uint8(Simple_out));title('手动插值');imwrite(uint8(Simple_out),'手动.png');
+figure;imshow(Simple_out/255);title('手动插值');imwrite(Simple_out/255,'手动.png');
 
-%% 双线性插值 
+%% 插值优化图像 减少拉链和伪色情况+
+Output = Demosaic_Inter (bayer);
+figure;imshow(Output);title('优化');imwrite(Output,'Output.png');
+
+%% 双线性插值
 OutputTwo = Demosaic_Twointer(I,m, n);
 figure;imshow(OutputTwo);imwrite(OutputTwo,'TwoOutput.png');
 
-%% 自适应插值 hamilton adams
+%% 自适应插值
 OutputAda = Demosaic_Adaptiveinter(bayerPad,m, n);
 imshow(uint8(OutputAda));title('自适应插值');imwrite(uint8(OutputAda),'OutputAda.png');

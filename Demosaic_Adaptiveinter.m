@@ -48,6 +48,8 @@ for ver = (add_h+1):2:hei+1
     end
 end
 
+figure;imshow(uint8(Out_G));imwrite(uint8(Out_G),'Out_G_111.png');
+
 %% 计算B通道关于G的水平梯度、垂直梯度
 for ver = (add_h+2):2:hei+2
     for hor = (add_w+1):2:wid+1
@@ -76,25 +78,32 @@ figure;imshow(uint8(Out_G));title('G插值');imwrite(uint8(Out_G),'Out_G.png');
 
 
 %% 补充绿色通道缺失的R\B像素
+%% GBRG
+% G R G R G R
+% B G B G B G
+% G R G R G R
+% B G B G B G
 for ver = (add_h+1):2:hei+1
     for hor = (add_w+1):2:wid+1
 
-        R = (bayerPad(ver, hor-1)+bayerPad(ver, hor+1))/2 + (2*Out_G(ver, hor)-Out_G(ver, hor-1)-Out_G(ver, hor+1))/4;
-        B = (bayerPad(ver-1, hor)+bayerPad(ver+1, hor))/2 + (2*Out_G(ver, hor)-Out_G(ver-1, hor)-Out_G(ver+1, hor))/4;
+        R = (bayerPad(ver, hor-1)+bayerPad(ver, hor+1))/2 + (2*Out_G(ver, hor)-Out_G(ver, hor-1)-Out_G(ver, hor+1))/2;
+        B = (bayerPad(ver-1, hor)+bayerPad(ver+1, hor))/2 + (2*Out_G(ver, hor)-Out_G(ver-1, hor)-Out_G(ver+1, hor))/2;
         Out_R(ver, hor) = R;
         Out_B(ver, hor) = B;
+       
     end
 end
 
 for ver = (add_h+2):2:hei+2
     for hor = (add_w+2):2:wid+2
 
-        R = (bayerPad(ver, hor-1)+bayerPad(ver, hor+1))/2 + (2*Out_G(ver, hor)-Out_G(ver, hor-1)-Out_G(ver, hor+1))/4;
-        B = (bayerPad(ver-1, hor)+bayerPad(ver+1, hor))/2 + (2*Out_G(ver, hor)-Out_G(ver-1, hor)-Out_G(ver+1, hor))/4;
+        B = (bayerPad(ver, hor-1)+bayerPad(ver, hor+1))/2 + (2*Out_G(ver, hor)-Out_G(ver, hor-1)-Out_G(ver, hor+1))/2;
+        R = (bayerPad(ver-1, hor)+bayerPad(ver+1, hor))/2 + (2*Out_G(ver, hor)-Out_G(ver-1, hor)-Out_G(ver+1, hor))/2;
         Out_R(ver, hor) = R;
         Out_B(ver, hor) = B;
     end
 end
+
 %% 补充红（蓝）通道缺失的B（R）像素
 %% GBRG
 % G R G R G R
@@ -137,8 +146,10 @@ for ver = (add_h+2):2:hei+2
     end
 end
 
-figure;imshow(uint8(Out_R));title('B插值');imwrite(uint8(Out_R),'Out_R.png');
-figure;imshow(uint8(Out_G));title('B插值');imwrite(uint8(Out_G),'Out_G.png');
+figure;imshow(uint8(Out_R));title('r插值');imwrite(uint8(Out_R),'Out_R.png');
+figure;imshow(uint8(Out_G));title('g插值');imwrite(uint8(Out_G),'Out_G.png');
 figure;imshow(uint8(Out_B));title('B插值');imwrite(uint8(Out_B),'Out_B.png');
 
-Output(:,:,1) = Out_R;Output(:,:,2) = Out_G;Output(:,:,3) = Out_B;
+Output(:,:,1) = Out_R(add_h+1:hei+2,add_w+1:wid+2);
+Output(:,:,2) = Out_G(add_h+1:hei+2,add_w+1:wid+2);
+Output(:,:,3) = Out_B(add_h+1:hei+2,add_w+1:wid+2);
