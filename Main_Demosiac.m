@@ -23,10 +23,11 @@ for i=1:1:m/2
         bayer(i*2-1,j*2)=I(i*2-1,j*2,1);
     end
 end
-figure;imshow(bayer);imwrite(uint8(bayer),'stripes2.png');
+figure;imshow(uint8(bayer));imwrite(uint8(bayer),'stripes2.png');
 
 %% bayer扩展，0元素补充（默认）或者周边行列赋值
-bayerPad = bayerPadding(bayer, m, n);imwrite(uint8(bayerPad),'bayerPad.png');
+bayerPad = bayerPadding(bayer, m, n);
+imwrite(uint8(bayerPad),'bayerPad.png');
 
 %% matlab自带demosaic函数处理
 I2=demosaic(uint8(bayer),'grbg');

@@ -1,29 +1,28 @@
 function Output = Demosaic_Adaptiveinter(Input_bayer, hei, wid)
-
+%% 程序分享 
+% 个人博客 www.aomanhao.top
+% Github https://github.com/AomanHao
+% CSDN https://blog.csdn.net/Aoman_Hao
+%--------------------------------------
+%hamilton & adams 自适应插值算法，复现经典论文，减少拉链伪色
+%--------------------------------------
 bayerPad = Input_bayer;
 [hei_be,wid_be,p]=size(bayerPad);
 add_h =(hei_be - hei)/2;%扩展行列数
 add_w =(wid_be - wid)/2;
 %% 自适应插值
-%输入 bayer生成bayer图像 GRBG
-figure;imshow(bayerPad);title('bayer');
-
-Out(:,:,1) =bayerPad ;Out(:,:,2) =bayerPad ;Out(:,:,3) = bayerPad;
-figure;imshow(uint8(Out));title('baye插值');imwrite(uint8(Out),'Out.png');
-
-
+%输入 bayer生成bayer图像 必须是GRBG，没考虑别的CFA排列
 %% GBRG
 % G R G R G R
 % B G B G B G
 % G R G R G R
 % B G B G B G
-%%
-%判断bayer图像、bayer排列、是否扩展\
-Out_R = zeros(hei_be,wid_be);
-Out_G = zeros(hei_be,wid_be);
-Out_B = zeros(hei_be,wid_be);
+%% 输出模板充0
+Out_R = zeros(hei_be,wid_be);%输出图像R分量
+Out_G = zeros(hei_be,wid_be);%输出图像G分量
+Out_B = zeros(hei_be,wid_be);%输出图像B分量
 
-%% 补充红、蓝 通道缺失的的G像素
+%% 补充红、蓝 分量缺失的的G像素
 %% 计算R像素关于G的水平梯度、垂直梯度
 for ver = (add_h+1):2:hei+1
     for hor = (add_w+1):2:wid+1
@@ -74,9 +73,6 @@ for ver = (add_h+2):2:hei+2
     end
 end
 %% G分量构建完成
-figure;imshow(uint8(Out_G));title('G插值');imwrite(uint8(Out_G),'Out_G.png');
-
-
 %% 补充绿色通道缺失的R\B像素
 %% GBRG
 % G R G R G R
@@ -145,11 +141,12 @@ for ver = (add_h+2):2:hei+2
         Out_R(ver, hor) = R;
     end
 end
+% %% 测试
+% figure;imshow(uint8(Out_R));title('r插值');imwrite(uint8(Out_R),'Out_R.png');
+% figure;imshow(uint8(Out_G));title('g插值');imwrite(uint8(Out_G),'Out_G.png');
+% figure;imshow(uint8(Out_B));title('B插值');imwrite(uint8(Out_B),'Out_B.png');
 
-figure;imshow(uint8(Out_R));title('r插值');imwrite(uint8(Out_R),'Out_R.png');
-figure;imshow(uint8(Out_G));title('g插值');imwrite(uint8(Out_G),'Out_G.png');
-figure;imshow(uint8(Out_B));title('B插值');imwrite(uint8(Out_B),'Out_B.png');
-
+%% 输出
 Output(:,:,1) = Out_R(add_h+1:hei+2,add_w+1:wid+2);
 Output(:,:,2) = Out_G(add_h+1:hei+2,add_w+1:wid+2);
 Output(:,:,3) = Out_B(add_h+1:hei+2,add_w+1:wid+2);
